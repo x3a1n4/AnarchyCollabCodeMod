@@ -7,4 +7,20 @@ This repo is managed by `Microlith57#4004` on the discord; feel free to ping me 
 
 ---
 
-Format is 2 spaces for tabs.
+Formatting:
+```yaml
+newLine: "\n"
+useTabs: false
+tabSize: 2
+indentationSize: 2
+NewLinesForBracesInTypes: false
+NewLinesForBracesInMethods: false
+NewLinesForBracesInProperties: false
+NewLinesForBracesInAccessors: false
+NewLinesForBracesInAnonymousMethods: false
+NewLinesForBracesInControlBlocks: false
+NewLinesForBracesInAnonymousTypes: false
+NewLinesForBracesInObjectCollectionArrayInitializers: false
+NewLinesForBracesInLambdaExpressionBody: false
+NewLineForElse: false
+```
