@@ -6,119 +6,122 @@ using Monocle;
 using Celeste.Mod.Procedurline;
 
 namespace Celeste.Mod.AnarchyCollab2022 {
-    public abstract class ShardRefill : CustomRefill {
-        public sealed class Shard : Entity {
-            public const float SHARD_SCALE = 0.8f;
+  public abstract class ShardRefill : CustomRefill {
+    public sealed class Shard : Entity {
+      public const float SHARD_SCALE = 0.8f;
 
-            private Follower follower;
-            private Sprite sprite;
+      private Follower follower;
+      private Sprite sprite;
 
-            internal Shard(ShardRefill refill) {
-                Refill = refill;
-		        Collider = new Hitbox(refill.Collider.Size.X * SHARD_SCALE, refill.Collider.Size.Y * SHARD_SCALE, refill.Collider.Position.X * SHARD_SCALE, refill.Collider.Position.Y * SHARD_SCALE);
-                Active = false;
-		        Depth = -1000000;
+      internal Shard(ShardRefill refill) {
+        Refill = refill;
+        Collider = new Hitbox(refill.Collider.Size.X * SHARD_SCALE, refill.Collider.Size.Y * SHARD_SCALE, refill.Collider.Position.X * SHARD_SCALE, refill.Collider.Position.Y * SHARD_SCALE);
+        Active = false;
+        Depth = -1000000;
 
-                //Create sprite
-                Add(sprite = new Sprite(null, null));
-                GetCustomShardSprite(refill.ShardColor, false).CloneInto(sprite);
-                sprite.Play("idle", randomizeFrame: true);
-                sprite.CenterOrigin();
-                sprite.Scale = new Vector2(SHARD_SCALE, SHARD_SCALE);
-                sprite.Visible = false;
+        //Create sprite
+        Add(sprite = new Sprite(null, null));
+        GetCustomShardSprite(refill.ShardColor, false).CloneInto(sprite);
+        sprite.Play("idle", randomizeFrame: true);
+        sprite.CenterOrigin();
+        sprite.Scale = new Vector2(SHARD_SCALE, SHARD_SCALE);
+        sprite.Visible = false;
 
-                //Add other components
-                Add(follower = new Follower());
-                Add(new MirrorReflection());
-		        Add(new BloomPoint(0.8f, 16f * SHARD_SCALE * 0.65f));
-		        Add(new VertexLight(Color.White, 1f, (int) (16*SHARD_SCALE), (int) (48*SHARD_SCALE)));
-            }
+        //Add other components
+        Add(follower = new Follower());
+        Add(new MirrorReflection());
+        Add(new BloomPoint(0.8f, 16f * SHARD_SCALE * 0.65f));
+        Add(new VertexLight(Color.White, 1f, (int)(16 * SHARD_SCALE), (int)(48 * SHARD_SCALE)));
+      }
 
-            public override void Render() {
-                sprite.RenderPosition = Position.Floor();
-                base.Render();
-            }
+      public override void Render() {
+        sprite.RenderPosition = Position.Floor();
+        base.Render();
+      }
 
-            internal void AttachToPlayer(Player player) {
-                if(Player == null) {
-                    //Follow player
-                    Player = player;
-                    Position = Refill.Position;
-                    player.Leader.GainFollower(follower);
-                    Active = true;
-                    sprite.Visible = true;
-                }
-            }
-
-            internal void Consume() {
-                if(Player != null) {
-                    //Feedback
-                    Audio.Play("event:/game/general/diamond_touch", Position).setVolume(SHARD_SCALE*SHARD_SCALE);
-                    Input.Rumble(RumbleStrength.Medium, RumbleLength.Short);
-                    (Scene as Level)?.ParticlesFG?.Emit(Refill.ShatterParticles, 3, Position, Vector2.One * 4f * SHARD_SCALE, (float) Math.PI / 2f);
-                    (Scene as Level)?.ParticlesFG?.Emit(Refill.ShatterParticles, 3, Position, Vector2.One * 4f * SHARD_SCALE, (float) Math.PI / 2f);
-
-                    //Don't follow player anymore
-                    Player.Leader.LoseFollower(follower);
-                    Player = null;
-                    Active = false;
-                    sprite.Visible = false;
-                    if(Refill.Broken) Refill.Respawn();
-                }
-            }
-
-            internal void Replace(Shard other) {
-                //Swap shard properties
-                Player = other.Player;
-                Position = other.Position;
-                other.Player = null;
-
-                Active = true;
-                sprite.Visible = true;
-                other.Active = false;
-                other.sprite.Visible = false;
-
-                //Swap followers
-                Player.Leader.Followers[other.follower.FollowIndex] = follower;
-                follower.OnGainLeaderUtil(other.follower.Leader);
-                other.follower.OnLoseLeaderUtil();
-                if(other.Refill.Broken) other.Refill.Respawn();
-            }
-
-            public ShardRefill Refill { get; }
-            public Player Player { get; private set; }
+      internal void AttachToPlayer(Player player) {
+        if (Player == null) {
+          //Follow player
+          Player = player;
+          Position = Refill.Position;
+          player.Leader.GainFollower(follower);
+          Active = true;
+          sprite.Visible = true;
         }
+      }
 
-        public static IEnumerable<Shard> GetShards<T>(Player player) where T : ShardRefill => GetShards(player, typeof(T));
-        public static IEnumerable<Shard> GetShards(Player player, Type refillType) => player.Leader.Followers.Where(f => f.Entity is Shard s && refillType.IsAssignableFrom(s.Refill.GetType())).Select(f => f.Entity as Shard);
+      internal void Consume() {
+        if (Player != null) {
+          //Feedback
+          Audio.Play("event:/game/general/diamond_touch", Position).setVolume(SHARD_SCALE * SHARD_SCALE);
+          Input.Rumble(RumbleStrength.Medium, RumbleLength.Short);
+          (Scene as Level)?.ParticlesFG?.Emit(Refill.ShatterParticles, 3, Position, Vector2.One * 4f * SHARD_SCALE, (float)Math.PI / 2f);
+          (Scene as Level)?.ParticlesFG?.Emit(Refill.ShatterParticles, 3, Position, Vector2.One * 4f * SHARD_SCALE, (float)Math.PI / 2f);
 
-        public static bool ConsumeShard<T>(Player player) where T : ShardRefill => ConsumeShard(player, typeof(T));
-        public static bool ConsumeShard(Player player, Type refillType) {
-            Shard s = GetShards(player, refillType).FirstOrDefault();
-            s?.Consume();
-            return s != null;
+          //Don't follow player anymore
+          Player.Leader.LoseFollower(follower);
+          Player = null;
+          Active = false;
+          sprite.Visible = false;
+          if (Refill.Broken) { Refill.Respawn(); }
         }
+      }
 
-        private Shard[] shards;
+      internal void Replace(Shard other) {
+        //Swap shard properties
+        Player = other.Player;
+        Position = other.Position;
+        other.Player = null;
 
-        protected ShardRefill(Vector2 position, Color color, Color shardColor, bool doubleRefill, float respawnDelay=2.5f) : base(position, color, doubleRefill, respawnDelay) => ShardColor = shardColor;
+        Active = true;
+        sprite.Visible = true;
+        other.Active = false;
+        other.sprite.Visible = false;
 
-        public override void Added(Scene scene) {
-            scene.Add(shards = Enumerable.Range(0, ShardRefillLimit).Select(_ => new Shard(this)).ToArray());
-            base.Added(scene);
-        }
+        //Swap followers
+        Player.Leader.Followers[other.follower.FollowIndex] = follower;
+        follower.OnGainLeaderUtil(other.follower.Leader);
+        other.follower.OnLoseLeaderUtil();
+        if (other.Refill.Broken) { other.Refill.Respawn(); }
+      }
 
-        protected override bool OnTouch(Player player) {
-            if(GetShards(player, GetType()).Count() >= ShardRefillLimit) return false;
-            foreach(Shard shard in shards) {
-                Shard exShard = GetShards(player, GetType()).Where(s => s.Refill != this).FirstOrDefault();
-                if(exShard != null) shard.Replace(exShard);
-                else shard.AttachToPlayer(player);
-            }
-            return true;
-        }
-
-        public Color ShardColor { get; }
-        public virtual int ShardRefillLimit => DoubleRefill ? 2 : 1;
+      public ShardRefill Refill { get; }
+      public Player Player { get; private set; }
     }
+
+    public static IEnumerable<Shard> GetShards<T>(Player player) where T : ShardRefill => GetShards(player, typeof(T));
+    public static IEnumerable<Shard> GetShards(Player player, Type refillType) => player.Leader.Followers.Where(f => f.Entity is Shard s && refillType.IsAssignableFrom(s.Refill.GetType())).Select(f => f.Entity as Shard);
+
+    public static bool ConsumeShard<T>(Player player) where T : ShardRefill => ConsumeShard(player, typeof(T));
+    public static bool ConsumeShard(Player player, Type refillType) {
+      Shard s = GetShards(player, refillType).FirstOrDefault();
+      s?.Consume();
+      return s != null;
+    }
+
+    private Shard[] shards;
+
+    protected ShardRefill(Vector2 position, Color color, Color shardColor, bool doubleRefill, float respawnDelay = 2.5f) : base(position, color, doubleRefill, respawnDelay) => ShardColor = shardColor;
+
+    public override void Added(Scene scene) {
+      scene.Add(shards = Enumerable.Range(0, ShardRefillLimit).Select(_ => new Shard(this)).ToArray());
+      base.Added(scene);
+    }
+
+    protected override bool OnTouch(Player player) {
+      if (GetShards(player, GetType()).Count() >= ShardRefillLimit) { return false; }
+      foreach (Shard shard in shards) {
+        Shard exShard = GetShards(player, GetType()).Where(s => s.Refill != this).FirstOrDefault();
+        if (exShard != null) {
+          shard.Replace(exShard);
+        } else {
+          shard.AttachToPlayer(player);
+        }
+      }
+      return true;
+    }
+
+    public Color ShardColor { get; }
+    public virtual int ShardRefillLimit => DoubleRefill ? 2 : 1;
+  }
 }

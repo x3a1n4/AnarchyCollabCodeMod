@@ -3,7 +3,7 @@ using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
 
-namespace Celeste.Mod.AnarchyCollab
+namespace Celeste.Mod.AnarchyCollab2022
 {
   [CustomEntity("AnarchyCollab/NPC_Elevator")]
   public class NPCElevator : NPC
