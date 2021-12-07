@@ -1,6 +1,6 @@
-﻿- Name: AnarchyCollab
+﻿- Name: AnarchyCollabHelper
   Version: 1.0.0
-  DLL: bin/Debug/net452/AnarchyCollab.dll
+  DLL: AnarchyCollabHelper.dll
   Dependencies:
     - Name: Everest
       Version: 1.3164.0
