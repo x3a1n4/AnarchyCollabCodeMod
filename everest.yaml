@@ -1,6 +1,8 @@
-﻿- Name: AnarchyCollabHelper
+﻿- Name: AnarchyCollab
   Version: 1.0.0
-  DLL: AnarchyCollabHelper.dll
+  DLL: AnarchyCollab.dll
   Dependencies:
     - Name: Everest
       Version: 1.3164.0
+    - Name: Procedurline
+      Version: 1.0
