@@ -24,3 +24,5 @@ NewLinesForBracesInObjectCollectionArrayInitializers: false
 NewLinesForBracesInLambdaExpressionBody: false
 NewLineForElse: false
 ```
+
+Always put `{}` after `if`, `else`, etc.
