@@ -12,7 +12,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
     public abstract class CustomRefill : Refill {
         private static readonly Color ONCE_COLOR = Calc.HexToColor("#93bd40");
         private static readonly Color DOUBLE_COLOR = Calc.HexToColor("#e268d1");
-        private static readonly Dictionary<(Color, bool), Sprite> RECOLORED_SPRITES = new Dictionary<(Color, bool), Sprite>();
+        private static readonly Dictionary<Tuple<Color, bool>, Sprite> RECOLORED_SPRITES = new Dictionary<Tuple<Color, bool>, Sprite>();
 
         private static readonly FieldInfo SHATTER_PARTICLE_FIELD = typeof(Refill).GetField("p_shatter", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo REGEN_PARTICLE_FIELD = typeof(Refill).GetField("p_regen", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -22,8 +22,8 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         private static readonly Func<Refill, Player, IEnumerator> REFILL_ROUTINE = (Func<Refill, Player, IEnumerator>) typeof(Refill).GetMethod("RefillRoutine", BindingFlags.NonPublic | BindingFlags.Instance).CreateDelegate(typeof(Func<Refill, Player, IEnumerator>));
 
         public static Sprite GetCustomShardSprite(Color color, bool doubleRefill) {
-            if(!RECOLORED_SPRITES.TryGetValue((color, doubleRefill), out Sprite recSprite)) {
-                RECOLORED_SPRITES[(color, doubleRefill)] = recSprite = new Sprite(null, null);
+            if(!RECOLORED_SPRITES.TryGetValue(new Tuple<Color, bool>(color, doubleRefill), out Sprite recSprite)) {
+                RECOLORED_SPRITES[new Tuple<Color, bool>(color, doubleRefill)] = recSprite = new Sprite(null, null);
 
                 //Get the original sprite
                 Sprite origSprite = new Sprite(GFX.Game, doubleRefill ? "objects/refillTwo/idle" : "objects/refill/idle");
@@ -50,14 +50,14 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 TextureData heapTexData = heap.CreateHeapTexture();
                 MTexture heapTex = new MTexture(VirtualContent.CreateTexture($"filteredRefill<{color.GetHashCode()}:{doubleRefill}>", heapTexData.Width, heapTexData.Height, Color.White));
                 heapTex.Texture.Texture_Safe.SetData<Color>(heapTexData.Pixels);
-                
+
                 //Create new animations
                 foreach(var anim in origSprite.Animations) {
                     Rectangle[] frameRects = animFrames[anim.Value];
                     recSprite.Animations[anim.Key] = new Sprite.Animation() {
                         Delay = anim.Value.Delay,
                         Goto = anim.Value.Goto,
-                        Frames = Enumerable.Range(0, anim.Value.Frames.Length).Select(idx => 
+                        Frames = Enumerable.Range(0, anim.Value.Frames.Length).Select(idx =>
                             new MTexture(heapTex, anim.Value.Frames[idx].AtlasPath, frameRects[idx], anim.Value.Frames[idx].DrawOffset, anim.Value.Frames[idx].Width, anim.Value.Frames[idx].Height)
                         ).ToArray()
                     };
@@ -76,7 +76,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             Color = ShiftColor(type.Color, hueShift, intensityShift),
             Color2 = ShiftColor(type.Color2, hueShift, intensityShift)
         };
-    
+
         public CustomRefill(Vector2 position, Color color, bool doubleRefill, float respawnDelay = 2.5f) : base(position, doubleRefill, respawnDelay < 0) {
             Color = color;
             DoubleRefill = doubleRefill;
@@ -95,11 +95,11 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             SHATTER_PARTICLE_FIELD.SetValue(this, ShatterParticles = ShiftColor((ParticleType) SHATTER_PARTICLE_FIELD.GetValue(this), hueShift, intensityShift));
             REGEN_PARTICLE_FIELD.SetValue(this, RegenerationParticles = ShiftColor((ParticleType) REGEN_PARTICLE_FIELD.GetValue(this), hueShift, intensityShift));
             GLOW_PARTICLE_FIELD.SetValue(this, GlowParticles = ShiftColor((ParticleType) GLOW_PARTICLE_FIELD.GetValue(this), hueShift, intensityShift));
-            
+
             //Change player touch callaback
             Components.Get<PlayerCollider>().OnCollide = OnPlayerCollision;
         }
-    
+
         private void OnPlayerCollision(Player player) {
             if(!Broken && OnTouch(player)) {
                 Broken = true;

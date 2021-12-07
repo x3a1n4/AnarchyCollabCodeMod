@@ -23,7 +23,7 @@ namespace Celeste.Mod.AnarchyCollab2022.Content {
 
         private void OnPlayerCollision(Player player) {
             if(player.StateMachine.State == Player.StNormal && player.Speed.Y > 0 && player.Bottom <= Top + 3f) {
-                Dust.Burst(player.BottomCenter, -MathF.PI/2, 8);
+                Dust.Burst(player.BottomCenter, -(float) Math.PI/2f, 8);
                 (Scene as Level)?.DirectionalShake(Vector2.UnitY, 0.05f);
                 Input.Rumble(RumbleStrength.Light, RumbleLength.Medium);
                 player.Bounce(Top + 2f);
@@ -66,7 +66,7 @@ namespace Celeste.Mod.AnarchyCollab2022.Content {
                 } else if(holdable.ShouldHaveGravity) {
                     float num = 800f;
                     if(Math.Abs(vSpeed) <= 30f) num *= 0.5f;
-                    
+
                     if(noGravityTimer > 0f) noGravityTimer -= Engine.DeltaTime;
                     else vSpeed = Calc.Approach(vSpeed, 200f, num * Engine.DeltaTime);
                 }

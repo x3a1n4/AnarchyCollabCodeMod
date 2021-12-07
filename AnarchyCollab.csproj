@@ -6,7 +6,7 @@
     <AssemblyName>AnarchyCollab</AssemblyName>
     <RootNamespace>Celeste.Mod.AnarchyCollab</RootNamespace>
     <LangVersion>8.0</LangVersion>
-    <CelesteGamePath Condition="'$(CELESTEGAMEPATH)' == ''">..\..\..\..</CelesteGamePath>
+    <CelesteGamePath Condition="'$(CELESTEGAMEPATH)' == ''">..\..</CelesteGamePath>
   </PropertyGroup>
 
   <!--Disable "Copy Local" for all references-->
@@ -43,11 +43,11 @@
   </Choose>
 
   <ItemGroup>
-    <Reference Include="Celeste" HintPath="Procedurline.dll" />
+    <Reference Include="Celeste" HintPath="lib/Procedurline.dll" />
   </ItemGroup>
 
   <Target Name="CopyDLL" AfterTargets="Build">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../.."/>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="."/>
   </Target>
   
 </Project>
