@@ -11,8 +11,8 @@ Formatting:
 ```yaml
 newLine: "\n"
 useTabs: false
-tabSize: 2
-indentationSize: 2
+tabSize: 4
+indentationSize: 4
 NewLinesForBracesInTypes: false
 NewLinesForBracesInMethods: false
 NewLinesForBracesInProperties: false
