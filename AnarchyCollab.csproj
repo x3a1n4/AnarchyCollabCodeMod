@@ -46,8 +46,12 @@
     <Reference Include="Celeste" HintPath="lib/Procedurline.dll" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="LunaticHelper" HintPath="lib/LunaticHelper.dll" />
+  </ItemGroup>
+
   <Target Name="CopyDLL" AfterTargets="Build">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="."/>
   </Target>
-  
+
 </Project>
