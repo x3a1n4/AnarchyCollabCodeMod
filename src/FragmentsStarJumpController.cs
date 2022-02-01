@@ -90,14 +90,14 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             Engine.Graphics.GraphicsDevice.Clear(Color.Black);
 
             foreach (var bg in backdrops) {
-                float alpha = bg.FadeAlphaMultiplier;
+                float original_fade = bg.FadeAlphaMultiplier;
                 bg.FadeAlphaMultiplier = 1f;
                 Draw.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
                 if (bg is NorthernLights) {
-                    Array particles = new DynamicData(bg).Get<Array>("particles");
+                    Array particles = DynamicData.For(bg).Get<Array>("particles");
 
                     for (int i = 0; i < particles.Length; i++) {
-                        DynamicData particleData = new DynamicData(particles.GetValue(i));
+                        var particleData = DynamicData.For(particles.GetValue(i));
                         var pos = particleData.Get<Vector2>("Position");
 
                         Draw.Rect(new Vector2(mod(pos.X - camera.X * 0.2f, 320f),
@@ -120,7 +120,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                     bg.Render(level);
                 }
                 Draw.SpriteBatch.End();
-                bg.FadeAlphaMultiplier = alpha;
+                bg.FadeAlphaMultiplier = original_fade;
             }
         }
 
