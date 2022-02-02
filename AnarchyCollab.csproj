@@ -16,8 +16,8 @@
   </ItemDefinitionGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoMod" Version="21.08.19.01" />
-    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.08.19.01" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.11.01.01" />
+    <PackageReference Include="MonoMod" Version="21.11.01.01" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,8 +50,10 @@
     <Reference Include="LunaticHelper" HintPath="lib/LunaticHelper.dll" />
   </ItemGroup>
 
-  <Target Name="CopyDLL" AfterTargets="Build">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="."/>
-  </Target>
+  <PropertyGroup>
+    <OutputPath>.</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
 
 </Project>
