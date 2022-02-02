@@ -143,11 +143,9 @@ namespace Celeste.Mod.AnarchyCollab2022 {
 
         public override void Render() {
             if (Scene.Tracker.GetEntity<FragmentsStarJumpController>() != null) {
-                Logger.Log("FragmentsStarJumpBlock", "found controller");
                 VirtualRenderTarget blockFill = FragmentsStarJumpController.BlockFill;
 
                 if (blockFill != null) {
-                    Logger.Log("FragmentsStarJumpBlock", "drawing from block fill texture");
                     Vector2 camera_pos = SceneAs<Level>().Camera.Position.Floor();
                     Rectangle sourceRectangle = new Rectangle((int)(base.X - camera_pos.X), (int)(base.Y - camera_pos.Y), (int)base.Width, (int)base.Height);
 
