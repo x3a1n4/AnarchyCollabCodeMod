@@ -91,20 +91,22 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         }
 
         private void Dispose() {
-            FragmentsStarJumpController successor = null;
-            foreach (var entity in SceneAs<Level>().Tracker.GetEntities<FragmentsStarJumpController>()) {
-                var controller = entity as FragmentsStarJumpController;
-                if (controller != null && controller != this) {
-                    successor = controller;
-                    break;
+            if (Current == this) {
+                FragmentsStarJumpController successor = null;
+                foreach (var entity in SceneAs<Level>().Tracker.GetEntities<FragmentsStarJumpController>()) {
+                    var controller = entity as FragmentsStarJumpController;
+                    if (controller != null && controller != this) {
+                        successor = controller;
+                        break;
+                    }
                 }
-            }
 
-            if (successor == null) {
-                BlockFill?.Dispose();
-                BlockFill = null;
+                if (successor == null) {
+                    BlockFill?.Dispose();
+                    BlockFill = null;
+                }
+                Current = successor;
             }
-            Current = successor;
         }
 
         private static float mod(float x, float m) {
