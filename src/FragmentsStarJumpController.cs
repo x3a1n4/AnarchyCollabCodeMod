@@ -27,6 +27,11 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 Current = this;
             }
             Add(new BeforeRenderHook(BeforeRender));
+            var transitionListener = new TransitionListener();
+            transitionListener.OnInBegin = () => {
+                if (Current.Scene != Scene) { Current = this; }
+            };
+            Add(transitionListener);
 
             backdrops = SceneAs<Level>().Background.Backdrops
                 .Where((bg) => bg.Tags.Contains("anarchycollab2022-fragments-block-fill"))

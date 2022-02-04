@@ -24,26 +24,10 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 // Left Support
                 DrawFill(blockFill, camera_pos, new Rectangle(0, 3, 5, 2));
                 DrawFill(blockFill, camera_pos, new Rectangle(0, 3, 2, 5));
-                // Draw.SpriteBatch.Draw((RenderTarget2D)blockFill, Position + new Vector2(0f, 3f), new Rectangle(
-                //     (int)(X - camera_pos.X),
-                //     (int)(Y - camera_pos.Y) + 3,
-                //     5, 2), Color.White);
-                // Draw.SpriteBatch.Draw((RenderTarget2D)blockFill, Position + new Vector2(0f, 3f), new Rectangle(
-                //     (int)(X - camera_pos.X),
-                //     (int)(Y - camera_pos.Y) + 3,
-                //     2, 5), Color.White);
 
                 // Right Support
                 DrawFill(blockFill, camera_pos, new Rectangle((int)Width - 5, 3, 5, 2));
                 DrawFill(blockFill, camera_pos, new Rectangle((int)Width - 2, 3, 2, 5));
-                // Draw.SpriteBatch.Draw((RenderTarget2D)blockFill, Position + new Vector2(Width - 5f, 3f), new Rectangle(
-                //     (int)(X - camera_pos.X + Width) - 5,
-                //     (int)(Y - camera_pos.Y) + 3,
-                //     5, 2), Color.White);
-                // Draw.SpriteBatch.Draw((RenderTarget2D)blockFill, Position + new Vector2(Width - 2f, 3f), new Rectangle(
-                //     (int)(X - camera_pos.X + Width) - 2,
-                //     (int)(Y - camera_pos.Y) + 3,
-                //     2, 5), Color.White);
             }
 
             base.Render();

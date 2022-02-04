@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Celeste.Mod.AnarchyCollab2022 {
     public static class JankTempleCustomEvent {
-        public static void Load() {
+        internal static void Load() {
             Everest.Events.EventTrigger.OnEventTrigger += JankTempleTilesetEvent;
         }
 
-        public static void Unload() {
+        internal static void Unload() {
             Everest.Events.EventTrigger.OnEventTrigger -= JankTempleTilesetEvent;
         }
 
