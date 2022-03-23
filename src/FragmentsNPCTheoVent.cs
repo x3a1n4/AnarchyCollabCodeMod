@@ -122,7 +122,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             player.Sprite.Play("lookUp");
             Vector2 zoomPosition = Vector2.Lerp(player.Position, Position, 0.5f) - 16f * Vector2.UnitY;
             yield return Level.ZoomTo(Level.Camera.CameraToScreen(zoomPosition), 2f, 0.5f);
-            yield return Textbox.Say("MICROLITH57_FRAGMENTS_THEO_VENTS");
+            yield return Textbox.Say("AC2022_FRAGMENTS_THEO_VENTS");
             yield return DisappearRoutine();
             yield return 0.25f;
             yield return Level.ZoomBack(0.5f);
