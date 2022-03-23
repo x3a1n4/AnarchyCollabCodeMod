@@ -67,7 +67,9 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             Level level = SceneAs<Level>();
             Camera camera = level.Camera;
 
-            BlockFill ??= VirtualContent.CreateRenderTarget("anarchycollab2022-fragments-block-fill", 320, 180);
+            if (BlockFill == null || BlockFill.IsDisposed) {
+                BlockFill = VirtualContent.CreateRenderTarget("anarchycollab2022-fragments-block-fill", 320, 180);
+            }
             Engine.Graphics.GraphicsDevice.SetRenderTarget(BlockFill);
             Engine.Graphics.GraphicsDevice.Clear(Color.Black);
 
