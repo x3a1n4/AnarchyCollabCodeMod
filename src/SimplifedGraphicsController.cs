@@ -54,7 +54,6 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         public Color ColorInteractive;
         public bool RenderVirtually;
         public bool ForceOpaque;
-        // FIX: distort is still applied for some reason
         public bool SuppressDistort;
 
         public static VirtualRenderTarget Target;
@@ -126,16 +125,18 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         }
 
         internal static void Load() {
+            IL.Celeste.Distort.Render += ModDistortRender;
+
             On.Celeste.GameplayRenderer.Render += GameplayRendererOnRender;
-            On.Celeste.Distort.Render += DistortOnRender;
             On.Monocle.Draw.HollowRect_float_float_float_float_Color += ModDrawHollowRect;
             On.Monocle.Draw.Circle_Vector2_float_Color_int += ModDrawCircle;
             On.Monocle.Grid.Render += CombineGridHitbox;
         }
 
         internal static void Unload() {
+            IL.Celeste.Distort.Render += ModDistortRender;
+
             On.Celeste.GameplayRenderer.Render -= GameplayRendererOnRender;
-            On.Celeste.Distort.Render -= DistortOnRender;
             On.Monocle.Draw.HollowRect_float_float_float_float_Color -= ModDrawHollowRect;
             On.Monocle.Draw.Circle_Vector2_float_Color_int -= ModDrawCircle;
             On.Monocle.Grid.Render -= CombineGridHitbox;
@@ -161,6 +162,10 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                                               or "Celeste.Mod.CollabUtils2.Entities.FakeMiniHeart"
                                               or "Celeste.Mod.CollabUtils2.Entities.MiniHeart") {
                     entity.Collider.Render(self.Camera, entity.Collidable ? Current.ColorInteractive : Current.ColorInteractive * 0.6f);
+                    continue;
+                } else if (entity.GetType().FullName is "VivHelper.Entities.SpikeStuff.CornerSpike") {
+                    entity.Collider.Render(self.Camera, entity.Collidable ? Current.ColorDanger : Current.ColorDangerInactive);
+                    continue;
                 }
 
                 switch (entity) {
@@ -174,6 +179,11 @@ namespace Celeste.Mod.AnarchyCollab2022 {
 
                     case Spikes:
                         entity.Collider.Render(self.Camera, entity.Collidable ? Current.ColorDanger : Current.ColorDangerInactive); break;
+
+                    case TriggerSpikes:
+                        entity.Collider.Render(self.Camera, Current.ColorDangerInactive);
+                        // TODO: draw active spike hitboxes
+                        break;
 
                     case Booster:
                         var booster = entity as Booster;
@@ -197,12 +207,14 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             }
         }
 
-        private static void DistortOnRender(On.Celeste.Distort.orig_Render orig, Texture2D source, Texture2D map, bool hasDistortion) {
-            if (ShouldApplyChanges && Current.SuppressDistort) {
-                Draw.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
-                Draw.SpriteBatch.Draw(source, Vector2.Zero, Color.White);
-                Draw.SpriteBatch.End();
-            } else { orig(source, map, hasDistortion); }
+        private static void ModDistortRender(ILContext il) {
+            ILCursor ilCursor = new(il);
+            if (ilCursor.TryGotoNext(MoveType.After, i => i.MatchLdsfld(typeof(GFX), "FxDistort"))) {
+                ilCursor.EmitDelegate<Func<Effect, Effect>>((effect) => {
+                    if (Current == null || Current.RenderVirtually || !Current.SuppressDistort) { return effect; }
+                    return null;
+                });
+            }
         }
 
         private static void ModDrawHollowRect(On.Monocle.Draw.orig_HollowRect_float_float_float_float_Color orig,

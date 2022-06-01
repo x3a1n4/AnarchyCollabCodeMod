@@ -9,8 +9,8 @@ using ..Ahorn, Maple
   danger_inactive_color::String="8b0000",
   interactive_color::String="9acd32",
   render_virtually::Bool=false,
-  force_opaque::Bool=false#,
-#   suppress_distort::Bool=false
+  force_opaque::Bool=false,
+  suppress_distort::Bool=false
 )
 
 @mapdef Entity "AnarchyCollab2022/SimplifiedGraphicsWindow" SimplifiedGraphicsWindow(
