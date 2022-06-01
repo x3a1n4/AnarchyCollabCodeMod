@@ -166,6 +166,9 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 } else if (entity.GetType().FullName is "VivHelper.Entities.SpikeStuff.CornerSpike") {
                     entity.Collider.Render(self.Camera, entity.Collidable ? Current.ColorDanger : Current.ColorDangerInactive);
                     continue;
+                } else if (entity.GetType().FullName is "Celeste.Mod.MaxHelpingHand.Entities.GroupedTriggerSpikes") {
+                    entity.Collider.Render(self.Camera, DynamicData.For(entity).Get<float>("Lerp") >= 1f ? Current.ColorDanger : Current.ColorDangerInactive);
+                    continue;
                 }
 
                 switch (entity) {
