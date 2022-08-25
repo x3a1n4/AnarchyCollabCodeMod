@@ -4,8 +4,8 @@ using ..Ahorn, Maple
 
 #define properties of entity
 @mapdef Entity "AnarchyCollab2022/TetrisScreen" TetrisScreen(
-    x::Integer, 
-    y::Integer, 
+    x::Integer,
+    y::Integer,
     ITiles::String="1",
     JTiles::String="2",
     LTiles::String="3",
@@ -13,9 +13,9 @@ using ..Ahorn, Maple
     STiles::String="5",
     TTiles::String="6",
     ZTiles::String="7"
-    )
+)
 
-    #TODO:
+#TODO:
 const placements = Ahorn.PlacementDict(
     "Tetris Screen (AnarchyCollab2022)" => Ahorn.EntityPlacement(
         TetrisScreen
@@ -34,7 +34,6 @@ Ahorn.editingOptions(entity::TetrisScreen) = Dict{String, Any}(
 
 function Ahorn.selection(entity::TetrisScreen)
     x, y = Ahorn.position(entity)
-    
 
     #todo
     return Ahorn.Rectangle(x-40, y-80, 80, 160)

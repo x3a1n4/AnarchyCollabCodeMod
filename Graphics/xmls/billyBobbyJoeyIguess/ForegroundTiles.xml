@@ -1,7 +1,7 @@
 ﻿<Data>
-	
+
   <!--
-  
+
 	id: tileset-id
 	path: path to texture
 	copy: uses data of the given tileset-id but with the new texture
@@ -12,22 +12,22 @@
 		x: any (wildcard)
 	tiles: list of tiles that the current one could be
 	sprites: additional sprites to overlay
-	
+
   -->
 
   <!--T piece-->
-  
+
   <Tileset id="①" path="Template">
     <set mask="xxx-x1x-xxx" tiles="0,0"/>
   </Tileset>
-  <Tileset id="Ⓘ" copy="①" path="I-Piece">
-  <Tileset id="Ⓛ" copy="①" path="L-Piece">
-  <Tileset id="Ⓙ" copy="①" path="J-Piece">
-  <Tileset id="Ⓞ" copy="①" path="O-Piece">
-  <Tileset id="Ⓣ" copy="①" path="T-piece">
-  <Tileset id="Ⓢ" copy="①" path="S-piece">
-  <Tileset id="Ⓩ" copy="①" path="Z-piece">
-  
+  <Tileset id="Ⓘ" copy="①" path="I-Piece"/>
+  <Tileset id="Ⓛ" copy="①" path="L-Piece"/>
+  <Tileset id="Ⓙ" copy="①" path="J-Piece"/>
+  <Tileset id="Ⓞ" copy="①" path="O-Piece"/>
+  <Tileset id="Ⓣ" copy="①" path="T-piece"/>
+  <Tileset id="Ⓢ" copy="①" path="S-piece"/>
+  <Tileset id="Ⓩ" copy="①" path="Z-piece"/>
+
   <!--
   <Tileset id="A" path="Template">
     <set mask="xxx-x1x-xxx" tiles="0,0"/>
@@ -40,7 +40,7 @@
   <Tileset id="G" copy="A" path="S-piece">
   <Tileset id="H" copy="A" path="Z-piece">
   -->
-	
+
   <!-- DEFAULT TILES -->
   <!-- ~~~~~~~~~~~~~ -->
 
@@ -61,7 +61,7 @@
     <set mask="x0x-110-x1x" tiles="0,12;1,12;2,12;3,12"/>
     <set mask="x1x-011-x0x" tiles="0,13;1,13;2,13;3,13"/>
     <set mask="x1x-110-x0x" tiles="0,14;1,14;2,14;3,14"/>
-    
+
     <set mask="111-111-110" tiles="4,0"/>
     <set mask="110-111-111" tiles="4,1"/>
     <set mask="111-111-011" tiles="4,2"/>
@@ -83,7 +83,7 @@
     <set mask="padding" tiles="5,0;5,1;5,2;5,3;5,4;5,5;5,6;5,7;5,8;5,9;5,10;5,11"/>
     <set mask="center" tiles="5,12"/>
   </Tileset>
-  
+
   <Tileset id="1" copy="z" path="dirt" ignores="g"/>
   <Tileset id="3" copy="z" path="snow"/>
   <Tileset id="4" copy="z" path="girder"/>
@@ -91,7 +91,7 @@
   <Tileset id="6" copy="z" path="stone"/>
   <Tileset id="7" copy="z" path="cement"/>
   <Tileset id="8" copy="z" path="rock"/>
-  
+
   <Tileset id="9" path="wood">
     <set mask="x0x-111-x1x" tiles="0,0;1,0;2,0;3,0"/>
     <set mask="x1x-111-x0x" tiles="0,1;1,1;2,1;3,1"/>
@@ -131,7 +131,7 @@
     <set mask="padding" tiles="5,0;5,1;5,2;5,3;5,4;5,5;5,6;5,7;5,8;5,9;5,10;5,11;5,12;5,13;5,14"/>
     <set mask="center" tiles="5,0;5,1;5,2;5,3;5,4;5,5;5,6;5,7;5,8;5,9;5,10;5,11;5,12;5,13;5,14"/>
   </Tileset>
-  
+
   <Tileset id="a" copy="9" path="woodStoneEdges"/>
   <Tileset id="b" copy="z" path="cliffside"/>
   <Tileset id="c" copy="9" path="poolEdges"/>
@@ -147,7 +147,7 @@
   <Tileset id="G" copy="z" path="reflectionAlt">
 	<set mask="center" tiles="5,12;5,13;5,14"/>
   </Tileset>
-	
+
   <Tileset id="h" path="grass" ignores="*">
     <set mask="x0x-111-x1x" tiles="0,0;1,0;2,0;3,0" sprites="grass_top_a"/>
     <set mask="x1x-111-x0x" tiles="0,1;1,1;2,1;3,1"/>
@@ -165,7 +165,7 @@
     <set mask="x0x-110-x1x" tiles="0,12;1,12;2,12;3,12" sprites="grass_top_a"/>
     <set mask="x1x-011-x0x" tiles="0,13;1,13;2,13;3,13"/>
     <set mask="x1x-110-x0x" tiles="0,14;1,14;2,14;3,14"/>
-    
+
     <set mask="111-111-110" tiles="4,0"/>
     <set mask="110-111-111" tiles="4,1"/>
     <set mask="111-111-011" tiles="4,2"/>
@@ -187,7 +187,7 @@
     <set mask="padding" tiles="5,0;5,1;5,2;5,3;5,4;5,5;5,6;5,7;5,8;5,9;5,10;5,11"/>
     <set mask="center" tiles="5,12"/>
   </Tileset>
-  
+
 	<Tileset id="i" copy="z" path="summit">
     <set mask="padding" tiles="5,0;5,1;5,2;5,3;5,4;5,5"/>
     <set mask="center" tiles="5,6;5,7;5,8;5,9;5,10;5,11;5,12;5,13;5,14"/>
@@ -197,12 +197,12 @@
     <set mask="padding" tiles="5,0;5,1;5,2;5,3;5,4;5,5"/>
     <set mask="center" tiles="5,6;5,7;5,8;5,9;5,10;5,11;5,12;5,13;5,14"/>
   </Tileset>
-	
+
   <Tileset id="m" copy="z" path="lostlevels" ignores="n">
     <set mask="padding" tiles="5,0;5,1;5,2;5,3;5,4;5,5"/>
     <set mask="center" tiles="5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,6;5,7;5,8;5,9;5,10;5,11;5,13;5,14;5,7;5,8;5,9;5,10;5,11;5,13;5,14;5,12"/>
   </Tileset>
-	
+
   <Tileset id="k" copy="z" path="core"/>
   <Tileset id="l" path="deadgrass" ignores="*">
     <set mask="x0x-111-x1x" tiles="0,0;1,0;2,0;3,0" sprites="dead_top_a"/>
@@ -221,7 +221,7 @@
     <set mask="x0x-110-x1x" tiles="0,12;1,12;2,12;3,12" sprites="dead_top_a"/>
     <set mask="x1x-011-x0x" tiles="0,13;1,13;2,13;3,13"/>
     <set mask="x1x-110-x0x" tiles="0,14;1,14;2,14;3,14"/>
-    
+
     <set mask="111-111-110" tiles="4,0"/>
     <set mask="110-111-111" tiles="4,1"/>
     <set mask="111-111-011" tiles="4,2"/>

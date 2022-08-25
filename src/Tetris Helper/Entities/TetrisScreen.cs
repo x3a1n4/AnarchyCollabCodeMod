@@ -1,15 +1,10 @@
-﻿using Celeste;
-using Celeste.Mod;
-using Celeste.Mod.Entities;
+﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Monocle;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // This feels like bad code etiquette. Ah well.
 namespace Celeste.Mod.AnarchyCollab2022 {
@@ -183,7 +178,6 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             public float timeSinceLastMove;
 
             public TetrisPiece(Vector2 Position, TetrisState State, TetrisScreen Parent) : base(Position) {
-
                 this.State = State;
                 this.Parent = Parent;
                 this.Rotation = 0;
@@ -198,8 +192,6 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 BoolThisPieceShape = ArrayOperations.IntToBool(thisShape);
 
                 UpdateCollider();
-                
-                
             }
 
             public override void Added(Scene scene) {
@@ -207,13 +199,12 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 if (CollideCheck<TetrisScreen>() && !KillingPlayerFlag) {
                     Scene.Tracker.GetEntity<Player>().Die(Vector2.Zero);
                     KillingPlayerFlag = true;
-                } 
+                }
             }
 
             public void GoToStartPos(TetrisScreen screen) {
                 Position = origPos;
                 Rotate(0);
-                
             }
 
             public void UpdateCollider() {
@@ -265,7 +256,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                         offsets = RegularPieceWallKickData[lookup];
                     }
 
-                    if(direction == 1) {
+                    if (direction == 1) {
                         offsets = offsets.AsEnumerable().Select(o => o = -o).ToArray();
                     }
 
@@ -293,8 +284,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                         Rotate(oldRotation);
                         UpdateCollider();
                     }
-                } catch (KeyNotFoundException e) {
-                }
+                } catch (KeyNotFoundException) { }
             }
 
             public Vector2 GetHardDropPosition() {
@@ -314,7 +304,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
 
                 timeSinceLastMove += Engine.DeltaTime;
 
-                if(timeSinceLastMove > 1) {
+                if (timeSinceLastMove > 1) {
                     MoveV(8, c => LandPiece());
                     timeSinceLastMove = 0;
                 }
@@ -326,7 +316,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             }
 
             public override void Render() {
-                foreach(TileGrid tg in Components.ToArray()) {
+                foreach (TileGrid tg in Components.ToArray()) {
                     Remove(tg);
                 }
 
@@ -380,8 +370,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                             enumerate++;
                             rotatedPiece.Render((Scene as Level).Camera, new Color(255, 255, enumerate * 50));
                         }
-                    } catch (KeyNotFoundException e) {
-                    }
+                    } catch (KeyNotFoundException) { }
                 }
                 #endregion
 
@@ -463,10 +452,10 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             Collider = new Grid(10, 20, 8, 8);
             Collider.Position = new Vector2(-40, -80);
 
-            for(int i = 0; i < 20; i++) {
+            for (int i = 0; i < 20; i++) {
                 PlayableBoard.Add(new List<TetrisState>(new TetrisState[10]));
             }
-            
+
         }
 
         private void GenerateBag() {
@@ -485,7 +474,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         private static bool Grid_Collide_Grid(On.Monocle.Grid.orig_Collide_Grid orig, Grid self, Grid grid) {
             try {
                 return orig(self, grid);
-            } catch (NotImplementedException e) {
+            } catch (NotImplementedException) {
                 return UtilityMethods.CollideCheck(self, grid);
             }
 
@@ -514,7 +503,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
 
             //settings.SoftDropButton.BufferTime = 0;
             //default of 10, or 6 inputs per second
-            settings.SoftDropButton.SetRepeat(10 / settings.SDF , 10 / settings.SDF);
+            settings.SoftDropButton.SetRepeat(10 / settings.SDF, 10 / settings.SDF);
 
             //settings.HardDropButton.BufferTime = 0;
         }
@@ -558,7 +547,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             Timer += deltaTime;
 
             //check death
-            if(Timer > TotalTime && !KillingPlayerFlag) {
+            if (Timer > TotalTime && !KillingPlayerFlag) {
                 Scene.Tracker.GetEntity<Player>().Die(Vector2.Zero);
                 KillingPlayerFlag = true;
                 //(Scene as Level).Reload();
@@ -608,7 +597,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 if (settings.SoftDropButton.Pressed) {
                     settings.SoftDropButton.ConsumePress();
                     //TODO: move more than one
-                    if(settings.SDF > 999) {
+                    if (settings.SDF > 999) {
                         CurrentPiece.MoveV(9999, c => af3 = false);
                     } else {
                         CurrentPiece.MoveV(8, c => af3 = false);
@@ -648,7 +637,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
 
                     RequestPiece(true);
                 }
-            }catch(NullReferenceException e) {
+            } catch (NullReferenceException e) {
                 Logger.Log("Tetris Helper", $"{e}, {e.StackTrace}");
             }
         }
@@ -656,13 +645,13 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         private void RequestPiece(bool hold) {
             //remove piece
             Scene.Remove(CurrentPiece);
-            
+
             TetrisState PieceState = NextPieces.First();
             //CurrentPiece = new TetrisPiece(Position + new Vector2(0, -80), NextPieces.First(), this);
             if (hold) {
                 if (HoldPiece == TetrisState.Empty) {
                     NextPieces.RemoveAt(0);
-                    
+
                 } else {
                     PieceState = HoldPiece;
                     //don't need to remove from queue
@@ -691,18 +680,13 @@ namespace Celeste.Mod.AnarchyCollab2022 {
                 for (int l = 0; l < data.Rows; l++) {
                     //reverse
                     Vector2 pieceLocation = (CurrentPiece.Position - (Position + new Vector2(-40, -80))) / 8;
-                    if(data[l, k]) {
+                    if (data[l, k]) {
                         try {
                             PlayableBoard[k + (int)pieceLocation.Y][l + (int)pieceLocation.X] = state;
-                        } catch (IndexOutOfRangeException e) {
-
-                        }
+                        } catch (IndexOutOfRangeException) { }
                     }
-                    
                 }
             }
-
-            
         }
 
         public override void Render() {
@@ -755,11 +739,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             heldPieceTiles.Position = new Vector2(-80, -72) + GetSpecificPieceAdjustment(HoldPiece);
             Add(heldPieceTiles);
 
-            
-
             base.Render();
-
-
         }
 
         public override void DebugRender(Camera camera) {
@@ -807,7 +787,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
             }
             return TileMapFromPiece(pieceTileMap);
         }
-        
+
         private static TileGrid TileMapFromPiece(VirtualMap<char> pieceTileMap) {
             TileGrid tiles = GFX.FGAutotiler.GenerateMap(pieceTileMap, new Autotiler.Behaviour {
                 EdgesExtend = false,
