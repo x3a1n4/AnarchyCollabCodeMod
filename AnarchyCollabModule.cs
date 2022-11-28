@@ -15,7 +15,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         }
 
         public override void Load() {
-            TetrisScreen.Load();
+            TetrisManager.Load();
 
             Content.CrouchBlocker.Load();
             Content.DemoDashButtonBlocker.Load();
@@ -26,7 +26,7 @@ namespace Celeste.Mod.AnarchyCollab2022 {
         }
 
         public override void Unload() {
-            TetrisScreen.Unload();
+            TetrisManager.Unload();
 
             Content.CrouchBlocker.Unload();
             Content.DemoDashButtonBlocker.Unload();
